@@ -39,7 +39,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Services.CommonBot
             {
                 var appId = botOptions.Value.UserAppId;
                 var password = botOptions.Value.UserAppPassword;
-                var credFactory = new PasswordServiceClientCredentialFactory(appId, password, string.Empty, null, null);
+                var credFactory = new PasswordServiceClientCredentialFactory(appId, password, botOptions.Value.TenantId, null, null);
                 this.credentials.Add(appId, credFactory);
             }
 
@@ -47,7 +47,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Services.CommonBot
             {
                 var appId = botOptions.Value.AuthorAppId;
                 var password = botOptions.Value.AuthorAppPassword;
-                var credFactory = new PasswordServiceClientCredentialFactory(appId, password, string.Empty, null, null);
+                var credFactory = new PasswordServiceClientCredentialFactory(appId, password, botOptions.Value.TenantId, null, null);
                 this.credentials.Add(appId, credFactory);
             }
 

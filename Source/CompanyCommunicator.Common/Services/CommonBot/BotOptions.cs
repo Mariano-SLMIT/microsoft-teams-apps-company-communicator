@@ -36,6 +36,11 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Services.CommonBot
         public string GraphAppId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Azure AD tenant ID where the bots are registered as SingleTenant.
+        /// </summary>
+        public string TenantId { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to use certificates.
         /// </summary>
         public bool UseCertificate { get; set; }
