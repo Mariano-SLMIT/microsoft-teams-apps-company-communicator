@@ -24,11 +24,11 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Services.CommonBot
         public AuthorAppCredentials(IOptions<BotOptions> botOptions)
             : base(
                   appId: botOptions.Value.AuthorAppId,
-                  password: botOptions.Value.AuthorAppPassword,
-                  channelAuthTenant: botOptions.Value.TenantId)
+                  password: botOptions.Value.AuthorAppPassword)
         {
             botOptions = botOptions ?? throw new ArgumentNullException(nameof(botOptions));
             this.useCertificate = botOptions.Value.UseCertificate;
+            this.ChannelAuthTenant = botOptions.Value.TenantId;
         }
 
         /// <summary>
