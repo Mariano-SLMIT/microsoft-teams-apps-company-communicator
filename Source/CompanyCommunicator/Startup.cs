@@ -94,6 +94,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator
                     botOptions.UserAppCertName = configuration.GetValue<string>("UserAppCertName", string.Empty);
                     botOptions.GraphAppId = configuration.GetValue<string>("GraphAppId");
                     botOptions.GraphAppCertName = configuration.GetValue<string>("GraphAppCertName", string.Empty);
+                    botOptions.TenantId = configuration.GetValue<string>("AzureAd:TenantId", string.Empty);
                 });
             services.AddOptions<BotFilterMiddlewareOptions>()
                 .Configure<IConfiguration>((botFilterMiddlewareOptions, configuration) =>
