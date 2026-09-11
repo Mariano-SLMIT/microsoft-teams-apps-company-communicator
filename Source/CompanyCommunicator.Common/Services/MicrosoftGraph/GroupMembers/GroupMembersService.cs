@@ -1,4 +1,4 @@
-﻿// <copyright file="GroupMembersService.cs" company="Microsoft">
+// <copyright file="GroupMembersService.cs" company="Microsoft">
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 // </copyright>
@@ -41,6 +41,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Services.MicrosoftGrap
                                     .Request()
                                     .Top(GraphConstants.MaxPageSize)
                                     .WithMaxRetry(GraphConstants.MaxRetry)
+                                    .Select("id,displayName,userPrincipalName,mail,userType,accountEnabled")
                                     .GetAsync();
         }
 
@@ -69,6 +70,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Services.MicrosoftGrap
                                     .Request()
                                     .Top(GraphConstants.MaxPageSize)
                                     .WithMaxRetry(GraphConstants.MaxRetry)
+                                    .Select("id,displayName,userPrincipalName,mail,userType,accountEnabled")
                                     .GetAsync();
 
             var users = response.OfType<User>().ToList();
