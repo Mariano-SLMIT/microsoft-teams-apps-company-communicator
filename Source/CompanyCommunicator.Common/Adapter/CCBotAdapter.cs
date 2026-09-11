@@ -1,4 +1,4 @@
-﻿// <copyright file="CCBotAdapter.cs" company="Microsoft">
+// <copyright file="CCBotAdapter.cs" company="Microsoft">
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 // </copyright>
@@ -42,13 +42,20 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Adapter
                 ClientCertificate = cert,
             };
 
-            await this.CreateConversationAsync(appCredentials.MicrosoftAppId, channelId, serviceUrl, null/*audience*/, conversationParameters, callback, cancellationToken);
+            // NOTE: passing an explicit audience (instead of null) is required for
+            // SingleTenant bots on this Bot Framework SDK version (4.21.2). When
+            // audience is null, CloudAdapterBase does not always resolve the correct
+            // OAuth scope for SingleTenant apps, which results in a token with the
+            // wrong audience and a 401 "Authorization has been denied" from the Bot
+            // Connector Service, even though the credentials and tenant are correct.
+            await this.CreateConversationAsync(appCredentials.MicrosoftAppId, channelId, serviceUrl, AuthenticationConstants.ToChannelFromBotOAuthScope, conversationParameters, callback, cancellationToken);
         }
 
         /// <inheritdoc/>
         public override async Task CreateConversationUsingSecretAsync(string channelId, string serviceUrl, MicrosoftAppCredentials credentials, ConversationParameters conversationParameters, BotCallbackHandler callback, CancellationToken cancellationToken)
         {
-            await this.CreateConversationAsync(credentials.MicrosoftAppId, channelId, serviceUrl, null/*audience*/, conversationParameters, callback, cancellationToken);
+            // See note above regarding explicit audience for SingleTenant bots.
+            await this.CreateConversationAsync(credentials.MicrosoftAppId, channelId, serviceUrl, AuthenticationConstants.ToChannelFromBotOAuthScope, conversationParameters, callback, cancellationToken);
         }
     }
 }
