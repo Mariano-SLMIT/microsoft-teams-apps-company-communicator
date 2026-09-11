@@ -1,4 +1,4 @@
-﻿// <copyright file="RecipientsService.cs" company="Microsoft">
+// <copyright file="RecipientsService.cs" company="Microsoft">
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 // </copyright>
@@ -37,12 +37,26 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Common.Services.Recipients
                 throw new ArgumentNullException(nameof(IEnumerable<SentNotificationDataEntity>));
             }
 
-            var notificationId = recipients.FirstOrDefault().PartitionKey;
+            var recipientsList = recipients.ToList();
 
-            var recipientBatches = recipients.AsBatches(Constants.MaximumNumberOfRecipientsInBatch);
+            // Guard against an empty recipient list (e.g. group/team sync produced zero
+            // valid recipients). Without this check, FirstOrDefault() returns null and
+            // accessing .PartitionKey throws a NullReferenceException that aborts the
+            // whole orchestration instead of reporting zero recipients cleanly.
+            if (recipientsList.Count == 0)
+            {
+                return new RecipientsInfo(notificationId: null)
+                {
+                    TotalRecipientCount = 0,
+                };
+            }
+
+            var notificationId = recipientsList.FirstOrDefault().PartitionKey;
+
+            var recipientBatches = recipientsList.AsBatches(Constants.MaximumNumberOfRecipientsInBatch);
             var recipientInfo = new RecipientsInfo(notificationId)
             {
-                TotalRecipientCount = recipients.ToList().Count,
+                TotalRecipientCount = recipientsList.Count,
             };
             int batchIndex = 1;
             foreach (var recipientBatch in recipientBatches)
