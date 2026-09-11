@@ -114,7 +114,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Prep.Func.PreparingToSend
                 var userEntity = await this.userDataRepository.GetAsync(UserDataTableNames.UserDataPartition, user.Id);
 
                 // This is to set the type of user(existing only, new ones will be skipped) to identify later if it is member or guest.
-                var userType = user.UserPrincipalName.GetUserType();
+                var userType = user.GetUserType();
                 if (userEntity == null && userType.Equals(UserType.Guest, StringComparison.OrdinalIgnoreCase))
                 {
                     // Skip processing new Guest users.
